@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
+
+//definicion del modelo de Articulos
 const Articulo = sequelize.define('articulo', {
     id: {
         type: DataTypes.INTEGER,
@@ -23,7 +25,8 @@ const Articulo = sequelize.define('articulo', {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     }
-
+}, {
+    timestamps: true
 });
 
 module.exports = Articulo;

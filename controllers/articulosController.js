@@ -15,10 +15,13 @@ const getArticulos = async (req, res) => {
     try {
         const articulo = await Articulo.findAll({
             where: {
+                //Filtro por nombre
                 ...(nombre && { nombre: { [Op.iLike]: `%${nombre}%` } }),
+                //Filtro por estadoActivo, si es proporcionado en la consulta
                 ...(estadoActivo !== undefined && { estadoActivo: estadoActivo === 'true' }),
             }
         })
+        //responde con los articulos encontrados
         res.status(200).json(articulo)
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -33,13 +36,16 @@ const updateArticulo = async (req, res) => {
         if (!articulo) {
             return res.status(404).json({ error: 'artículo no encontrado' })
         }
+        //Actualiza el articulo con los nuevos datos
         await articulo.update({ nombre, marca, estadoActivo, modifiedDate: new Date() })
+        //responde con el articulo actualizado
         res.status(200).json(articulo)
     } catch (error) {
-        res.status
+        res.status(500).json({ error: error.message })
+
     }
 }
-
+// cuando hacemos delete no elimina el producto sino que lo modifica a estado inactivo
 const deleteArticulo = async (req, res) => {
     const { id } = req.params;
     try {
@@ -47,7 +53,9 @@ const deleteArticulo = async (req, res) => {
         if (!articulo) {
             return res.status(404).json({ error: ' artículo no encontrado' });
         }
+        //desactiva el articulo en lugar de eliminarlo
         await articulo.update({ estadoActivo: false })
+        //lo devuelve
         res.status(200).json(articulo);
     } catch (error) {
         res.status(500).json({ error: error.message })
