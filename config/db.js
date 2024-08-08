@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const sequelize = new Sequelize({
     storage: path.join(__dirname, '..', 'database.sqlite'),//Ruta donde se almacena la base de datos
     dialect: 'sqlite',
-    logging: false
+    logging: false,
 });
 
 module.exports = { sequelize }
